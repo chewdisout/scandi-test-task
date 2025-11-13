@@ -1,0 +1,78 @@
+# =============================
+# Global
+# =============================
+.DS_Store
+Thumbs.db
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Logs
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+debug.log
+*.log
+
+# OS crap
+*.swp
+*.cache
+*.tmp
+
+
+# =============================
+# Frontend (React + Vite)
+# =============================
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+vite.config.js.timestamp*
+vite.config.ts.timestamp*
+.vite/deps/
+.vite/
+
+
+# =============================
+# Backend (PHP)
+# =============================
+backend/vendor/
+backend/storage/
+backend/cache/
+backend/.phpunit.result.cache
+
+# Composer
+composer.lock
+composer.phar
+
+
+# =============================
+# Docker
+# =============================
+/docker/mysql/data/
+/docker/php/logs/
+/docker/apache/logs/
+
+*.pid
+
+
+# =============================
+# IDE & Editor
+# =============================
+.idea/
+.vscode/
+*.iml
+
+
+# =============================
+# Misc
+# =============================
+*.zip
+*.tar.gz
+
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
