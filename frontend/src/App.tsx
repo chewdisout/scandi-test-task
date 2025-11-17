@@ -15,8 +15,8 @@ const App: React.FC = () => {
     <CartProvider>
       <Header />
       <Routes>
-        <Route path="/" element={firstCat ? <Navigate to={`/category/${firstCat}`} replace /> : <div className="p-6">Loading…</div>} />
-        <Route path="/category/:name" element={<CategoryPage />} />
+        <Route path="/" element={firstCat ? <Navigate to={`/${firstCat}`} replace /> : <div className="p-6">Loading…</div>} />
+        <Route path="/:name" element={<CategoryPage />} />
         <Route path="/product/:id" element={<ProductPage />} />
         <Route path="*" element={<div className="p-6">Not found</div>} />
       </Routes>

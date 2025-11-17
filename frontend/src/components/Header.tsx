@@ -17,7 +17,7 @@ export default function Header() {
       {/* left: nav */}
       <nav className="nav">
         {cats.map((c) => (
-          <NavLink key={c.id} to={`/category/${c.name}`}>
+          <NavLink key={c.id} to={`/${c.name}`}>
             {({ isActive }) => (
               <span
                 data-testid={isActive ? "active-category-link" : "category-link"}

@@ -24,7 +24,7 @@ export default function CartOverlay({ open, onClose }:{ open:boolean; onClose:()
   return (
     <>
       <div className="backdrop" onClick={onClose}/>
-      <div className="panel">
+      <div className="panel" data-testid="cart-overlay">
         <div style={{fontWeight:600, marginBottom:8}}>My Bag, {count === 1 ? "1 Item" : `${count} Items`}</div>
 
         {lines.map(l => (
