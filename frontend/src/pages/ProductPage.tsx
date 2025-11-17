@@ -99,8 +99,10 @@ export default function ProductPage(){
           ADD TO CART
         </button>
 
-        <div className="desc" data-testid="product-description">
-          <p>{p.description}</p>
+        <div 
+          className="desc" 
+          data-testid="product-description" 
+          dangerouslySetInnerHTML={{ __html: p.description }}>
         </div>
       </div>
     </div>
