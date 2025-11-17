@@ -5,6 +5,12 @@ import { Q_PRODUCT } from "../gql";
 import { kebab, formatPrice } from "../utils/format";
 import { useCart } from "../state/CartContext";
 
+function formatTestIdValue(attrK: string, value: string) {
+  if (attrK === "color") return value;
+  if (attrK === "capacity") return value.toUpperCase();
+  return kebab(value);
+}
+
 export default function ProductPage(){
   const { id } = useParams<{id:string}>();
   const { data, loading, error } = useQuery(Q_PRODUCT, { variables:{ id } });
@@ -65,7 +71,7 @@ export default function ProductPage(){
                       aria-pressed={pressed}
                       className={cls}
                       style={style}
-                      data-testid={`product-attribute-${attrK}-${kebab(it.value)}`}
+                      data-testid={`product-attribute-${attrK}-${formatTestIdValue(attrK, it.value)}`}
                       aria-label={`${a.name}: ${it.displayValue}`}
                     >
                       {a.type === 'swatch' ? '' : it.displayValue}
