@@ -5,7 +5,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      '/graphql': { target: 'http://localhost:8080', changeOrigin: true },
+      '/graphql': { target: 'https://scandi-test-task-be.onrender.com', changeOrigin: true },
     },
   },
 });
