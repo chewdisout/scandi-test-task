@@ -1,10 +1,10 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { Q_CATEGORIES } from "../gql";
 import CartOverlay from "./CartOverlay";
 import { useCart } from "../state/CartContext";
 import LogoIcon from "./LogoIcon";
+import CategoryLink from "./CategoryLink";
 
 export default function Header() {
   const { data } = useQuery(Q_CATEGORIES);
@@ -17,16 +17,9 @@ export default function Header() {
       {/* left: nav */}
       <nav className="nav">
         {cats.map((c) => (
-          <NavLink key={c.id} to={`/${c.name}`}>
-            {({ isActive }) => (
-              <span
-                data-testid={isActive ? "active-category-link" : "category-link"}
-                className={isActive ? "nav-link nav-link--active" : "nav-link"}
-              >
-                {c.name}
-              </span>
-            )}
-          </NavLink>
+          <CategoryLink key={c.id} to={`/${c.name}`}>
+            {c.name}
+          </CategoryLink>
         ))}
       </nav>
 

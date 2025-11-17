@@ -65,7 +65,7 @@ export default function ProductPage(){
                       aria-pressed={pressed}
                       className={cls}
                       style={style}
-                      data-testid={`cart-item-attribute-${attrK}-${kebab(it.value)}`}
+                      data-testid={`product-attribute-${attrK}-${kebab(it.value)}`}
                       aria-label={`${a.name}: ${it.displayValue}`}
                     >
                       {a.type === 'swatch' ? '' : it.displayValue}
