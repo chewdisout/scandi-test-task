@@ -6,6 +6,7 @@ import Header from "./components/Header";
 import CategoryPage from "./pages/CategoryPage";
 import ProductPage from "./pages/ProductPage";
 import { CartProvider } from "./state/CartContext";
+import CartOverlay from "./components/CartOverlay";
 
 const App: React.FC = () => {
   const { data } = useQuery(Q_CATEGORIES);
@@ -14,6 +15,7 @@ const App: React.FC = () => {
   return (
     <CartProvider>
       <Header />
+      <CartOverlay />
       <Routes>
         <Route path="/" element={firstCat ? <Navigate to={`/${firstCat}`} replace /> : <div className="p-6">Loading…</div>} />
         <Route path="/:name" element={<CategoryPage />} />

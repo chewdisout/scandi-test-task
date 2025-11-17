@@ -1,7 +1,5 @@
-import React from "react";
 import { useQuery } from "@apollo/client";
 import { Q_CATEGORIES } from "../gql";
-import CartOverlay from "./CartOverlay";
 import { useCart } from "../state/CartContext";
 import LogoIcon from "./LogoIcon";
 import CategoryLink from "./CategoryLink";
@@ -9,8 +7,7 @@ import CategoryLink from "./CategoryLink";
 export default function Header() {
   const { data } = useQuery(Q_CATEGORIES);
   const cats: { id: number; name: string }[] = data?.categories ?? [];
-  const { count } = useCart();
-  const [open, setOpen] = React.useState(false);
+  const { count, toggleOverlay } = useCart();
 
   return (
     <header className="header">
@@ -33,10 +30,7 @@ export default function Header() {
         <button
           className="cart-btn"
           data-testid="cart-btn"
-          onClick={() => {
-            if (open == true)setOpen(false); 
-            else setOpen(true);
-          }}
+          onClick={toggleOverlay}
         >
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M19.5613 4.87359C19.1822 4.41031 18.5924 4.12873 17.9821 4.12873H5.15889L4.75914 2.63901C4.52718 1.77302 3.72769 1.16895 2.80069 1.16895H0.653099C0.295301 1.16895 0 1.45052 0 1.79347C0 2.13562 0.294459 2.418 0.653099 2.418H2.80069C3.11654 2.418 3.39045 2.61936 3.47434 2.92139L6.04306 12.7077C6.27502 13.5737 7.07451 14.1778 8.00152 14.1778H16.4028C17.3289 14.1778 18.1507 13.5737 18.3612 12.7077L19.9405 6.50575C20.0877 5.941 19.9619 5.33693 19.5613 4.87365L19.5613 4.87359ZM18.6566 6.22252L17.0773 12.4245C16.9934 12.7265 16.7195 12.9279 16.4036 12.9279H8.00154C7.68569 12.9279 7.41178 12.7265 7.32789 12.4245L5.49611 5.39756H17.983C18.1936 5.39756 18.4042 5.49824 18.5308 5.65948C18.6567 5.81994 18.7192 6.0213 18.6567 6.22266L18.6566 6.22252Z" fill="#43464E"/>
@@ -50,8 +44,6 @@ export default function Header() {
           )}
         </button>
       </div>
-
-      <CartOverlay open={open} onClose={() => setOpen(false)} />
     </header>
   );
 }

@@ -18,7 +18,6 @@ export type CartLine = {
   quantity: number;
 };
 
-
 type CartCtx = {
   lines: CartLine[];
   add: (line: Omit<CartLine, "key" | "quantity">, quantity?: number) => void;
@@ -27,12 +26,20 @@ type CartCtx = {
   clear: () => void;
   count: number;
   total: (symbol: string) => number;
+
+  isOverlayOpen: boolean;
+  openOverlay: () => void;
+  closeOverlay: () => void;
+  toggleOverlay: () => void;
 };
 
 const Ctx = createContext<CartCtx>(null as any);
 
 const keyOf = (pId: string, selected: SelectedMap) =>
-  `${pId}|${Object.entries(selected).sort().map(([k, v]) => `${k}:${v}`).join(",")}`;
+  `${pId}|${Object.entries(selected)
+    .sort()
+    .map(([k, v]) => `${k}:${v}`)
+    .join(",")}`;
 
 const LS_KEY = "cart_v1";
 
@@ -42,9 +49,15 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return raw ? JSON.parse(raw) : [];
   });
 
+  const [isOverlayOpen, setIsOverlayOpen] = useState(false);
+
   useEffect(() => {
     localStorage.setItem(LS_KEY, JSON.stringify(lines));
   }, [lines]);
+
+  const openOverlay = () => setIsOverlayOpen(true);
+  const closeOverlay = () => setIsOverlayOpen(false);
+  const toggleOverlay = () => setIsOverlayOpen(prev => !prev);
 
   const add: CartCtx["add"] = (l, q = 1) => {
     const key = keyOf(l.productId, l.selected);
@@ -57,6 +70,8 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
       return [...prev, { ...l, key, quantity: q }];
     });
+
+    setIsOverlayOpen(true);
   };
 
   const inc = (key: string) =>
@@ -66,7 +81,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setLines(prev =>
       prev
         .map(x => (x.key === key ? { ...x, quantity: x.quantity - 1 } : x))
-        .filter(x => x.quantity > 0)
+        .filter(x => x.quantity > 0),
     );
 
   const clear = () => setLines([]);
@@ -80,7 +95,21 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }, 0);
 
   return (
-    <Ctx.Provider value={{ lines, add, inc, dec, clear, count, total }}>
+    <Ctx.Provider
+      value={{
+        lines,
+        add,
+        inc,
+        dec,
+        clear,
+        count,
+        total,
+        isOverlayOpen,
+        openOverlay,
+        closeOverlay,
+        toggleOverlay,
+      }}
+    >
       {children}
     </Ctx.Provider>
   );
