@@ -15,7 +15,7 @@ COPY . .
 
 RUN composer install --no-dev --optimize-autoloader --no-interaction
 
-RUN php src/Database/Seed/seed.php
+RUN php src/Database/Seed/DataSeeder.php
 
 RUN rm /etc/apache2/sites-available/000-default.conf
 
