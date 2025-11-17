@@ -4,6 +4,8 @@ RUN docker-php-ext-install pdo pdo_mysql
 
 WORKDIR /var/www/html
 
+COPY . .
+
 RUN rm /etc/apache2/sites-available/000-default.conf
 
 RUN cat << 'APACHECONF' > /etc/apache2/sites-available/000-default.conf
