@@ -38,90 +38,112 @@ export default function CartOverlay() {
     <>
       <div className="backdrop" onClick={closeOverlay} />
       <div className="panel" data-testid="cart-overlay">
-        <div style={{ fontWeight: 600, marginBottom: 8 }}>
-          My Bag, {count === 1 ? "1 Item" : `${count} Items`}
+        <div className="panel-title">
+          <b>My Bag</b>, {count === 1 ? "1 item" : `${count} items`}
         </div>
 
-        {lines.map(l => (
-          <div key={l.key} className="item">
-            <div style={{ flex: 1 }}>
-              <div style={{ fontWeight: 600 }}>{l.name}</div>
-              {l.attributes.map(a => {
-                const attrK = kebab(a.name);
-                const sel = l.selected[a.name];
-                return (
-                  <div
-                    key={a.name}
-                    data-testid={`cart-item-attribute-${attrK}`}
-                    style={{ marginTop: 6 }}
-                  >
-                    {a.items.map(it => {
-                      const isSel = it.value === sel;
-                      const itemK = kebab(it.value);
-                      const base =
-                        a.type === "swatch"
-                          ? {
-                              width: 18,
-                              height: 18,
-                              border: "1px solid #ddd",
-                              background: it.value,
-                              display: "inline-block",
-                              marginRight: 6,
-                            }
-                          : {
-                              border: "1px solid #1D1F22",
-                              padding: "2px 6px",
-                              marginRight: 6,
-                              display: "inline-block",
-                              fontSize: 12,
-                            };
-                      return (
-                        <span
-                          key={it.id}
-                          style={
-                            isSel
-                              ? { ...base, outline: "2px solid #1D1F22" }
-                              : base
-                          }
-                          data-testid={`cart-item-attribute-${attrK}-${itemK}${
-                            isSel ? "-selected" : ""
-                          }`}
-                          title={`${a.name}: ${it.displayValue}`}
-                        >
-                          {a.type === "swatch" ? "" : it.displayValue}
-                        </span>
-                      );
-                    })}
-                  </div>
-                );
-              })}
-            </div>
+        {lines.map(l => {
+          const priceObj = l.prices[0];
+          const itemPrice = priceObj
+            ? formatPrice(priceObj.amount, priceObj.currency.symbol)
+            : "";
 
-            <div className="qty">
-              <button
-                className="btn"
-                data-testid="cart-item-amount-increase"
-                onClick={() => inc(l.key)}
-              >
-                +
-              </button>
-              <div data-testid="cart-item-amount">{l.quantity}</div>
-              <button
-                className="btn"
-                data-testid="cart-item-amount-decrease"
-                onClick={() => dec(l.key)}
-              >
-                -
-              </button>
-            </div>
+          return (
+            <div key={l.key} className="item">
+              {/* left column: name, price, attributes */}
+              <div className="item-left">
+                <div className="item-name">{l.name}</div>
 
-            <img
-              src={l.image}
-              alt={l.name}
-              style={{ width: 105, height: 137, objectFit: "cover" }}
-            />
-          </div>
-        ))}
+                <div className="item-price">{itemPrice}</div>
+
+                {l.attributes.map(a => {
+                  const attrK = kebab(a.name);
+                  const sel = l.selected[a.name];
+
+                  return (
+                    <div
+                      key={a.name}
+                      className="item-attr"
+                      data-testid={`cart-item-attribute-${attrK}`}
+                    >
+                      <div className="item-attr-label">{a.name}:</div>
+                      <div className="item-attr-options">
+                        {a.items.map(it => {
+                          const isSel = it.value === sel;
+                          const itemK = kebab(it.value);
+                          const base =
+                            a.type === "swatch"
+                              ? {
+                                  width: 18,
+                                  height: 18,
+                                  border: "1px solid #ddd",
+                                  background: it.value,
+                                  display: "inline-block",
+                                  marginRight: 6,
+                                }
+                              : {
+                                  border: "1px solid #1D1F22",
+                                  padding: "2px 6px",
+                                  marginRight: 6,
+                                  display: "inline-block",
+                                  fontSize: 12,
+                                };
+                          return (
+                            <span
+                              key={it.id}
+                              className={
+                                isSel
+                                  ? "selected"
+                                  : "not-selected"
+                              }
+                              style={
+                                isSel
+                                  ? { ...base, outline: "2px solid #1D1F22" }
+                                  : base
+                              }
+                              data-testid={`cart-item-attribute-${attrK}-${itemK}${
+                                isSel ? "-selected" : ""
+                              }`}
+                              title={`${a.name}: ${it.displayValue}`}
+                            >
+                              {a.type === "swatch" ? "" : it.displayValue}
+                            </span>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* middle: qty controls */}
+              <div className="qty">
+                <button
+                  className="btn"
+                  data-testid="cart-item-amount-increase"
+                  onClick={() => inc(l.key)}
+                >
+                  +
+                </button>
+                <div data-testid="cart-item-amount">{l.quantity}</div>
+                <button
+                  className="btn"
+                  data-testid="cart-item-amount-decrease"
+                  onClick={() => dec(l.key)}
+                >
+                  -
+                </button>
+              </div>
+
+              {/* right: image */}
+              <img
+                src={l.image}
+                alt={l.name}
+                className="item-image"
+              />
+            </div>
+          );
+        })}
 
         <div className="summary">
           <span>Total</span>

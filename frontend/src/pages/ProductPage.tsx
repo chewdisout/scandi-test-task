@@ -51,14 +51,14 @@ export default function ProductPage(){
       </div>
 
       <div>
-        <h2 style={{margin:'0 0 6px 0'}}>{p.name}</h2>
+        <h2 className="product-name">{p.name}</h2>
 
         {p.attributes.map((a:any) => {
           const attrK = kebab(a.name);
           const current = sel[a.name];
           return (
             <div key={a.id} className="attr" data-testid={`product-attribute-${attrK}`}>
-              <div className="label">{a.name}</div>
+              <div className="label">{a.name}:</div>
               <div className="opts">
                 {a.items.map((it:any) => {
                   const pressed = current === it.value;
@@ -83,7 +83,7 @@ export default function ProductPage(){
           );
         })}
 
-        <div className="attr">
+        <div className="attr price">
           <div className="label">PRICE:</div>
           <div style={{fontWeight:600, fontSize:18}}>
             {price ? formatPrice(price.amount, price.currency.symbol) : ""}

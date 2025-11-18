@@ -8,9 +8,15 @@ export default function CategoryPage(){
   const { data, loading, error } = useQuery(Q_PRODUCTS, { variables:{ category: name }});
   if (loading) return <div className="grid">Loading…</div>;
   if (error) return <pre>{error.message}</pre>;
+
   return (
-    <div className="grid">
-      {data.products.map((p:any)=> <ProductCard key={p.id} product={p}/>)}
+    <div >
+      <h1 className="category-page-header">
+        {name}
+      </h1>
+      <div className="grid">
+        {data.products.map((p:any)=> <ProductCard key={p.id} product={p}/>)}
+      </div>
     </div>
   );
 }

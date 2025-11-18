@@ -88,11 +88,13 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const count = useMemo(() => lines.reduce((a, b) => a + b.quantity, 0), [lines]);
 
-  const total: CartCtx["total"] = () =>
-    lines.reduce((sum, l) => {
-      const price = l.prices[0]?.amount ?? 0;
-      return sum + price * l.quantity;
-    }, 0);
+  const total: CartCtx["total"] = symbol =>
+  lines.reduce((sum, l) => {
+    const priceObj =
+      l.prices.find(p => p.currency.symbol === symbol) ?? l.prices[0];
+    const price = priceObj?.amount ?? 0;
+    return sum + price * l.quantity;
+  }, 0);
 
   return (
     <Ctx.Provider
